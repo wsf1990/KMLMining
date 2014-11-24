@@ -1,1 +1,12 @@
 D:\KMLMining\KMLMining\KMLMining\bin\Debug\KMLMining.exe.config
+D:\KMLMining\KMLMining\KMLMining\obj\Debug\KMLMining.csprojResolveAssemblyReference.cache
+D:\KMLMining\KMLMining\KMLMining\obj\Debug\KMLMining.Form1.resources
+D:\KMLMining\KMLMining\KMLMining\obj\Debug\KMLMining.Properties.Resources.resources
+D:\KMLMining\KMLMining\KMLMining\obj\Debug\KMLMining.csproj.GenerateResource.Cache
+D:\KMLMining\KMLMining\KMLMining\bin\Debug\KMLMining.exe
+D:\KMLMining\KMLMining\KMLMining\bin\Debug\KMLMining.pdb
+D:\KMLMining\KMLMining\KMLMining\obj\Debug\KMLMining.exe
+D:\KMLMining\KMLMining\KMLMining\obj\Debug\KMLMining.pdb
+D:\KMLMining\KMLMining\KMLMining\bin\Debug\HtmlAgilityPack.dll
+D:\KMLMining\KMLMining\KMLMining\bin\Debug\HtmlAgilityPack.pdb
+D:\KMLMining\KMLMining\KMLMining\bin\Debug\HtmlAgilityPack.xml
