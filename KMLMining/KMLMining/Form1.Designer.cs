@@ -44,15 +44,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btn_Pause = new System.Windows.Forms.Button();
             this.btn_Stop = new System.Windows.Forms.Button();
+            this.btn_RandomMining = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pb_img)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Mining
             // 
-            this.btn_Mining.Location = new System.Drawing.Point(410, 51);
+            this.btn_Mining.Location = new System.Drawing.Point(357, 51);
             this.btn_Mining.Name = "btn_Mining";
-            this.btn_Mining.Size = new System.Drawing.Size(75, 23);
+            this.btn_Mining.Size = new System.Drawing.Size(67, 23);
             this.btn_Mining.TabIndex = 0;
             this.btn_Mining.Text = "开始挖掘";
             this.btn_Mining.UseVisualStyleBackColor = true;
@@ -62,7 +63,7 @@
             // 
             this.txt_URL.Location = new System.Drawing.Point(104, 53);
             this.txt_URL.Name = "txt_URL";
-            this.txt_URL.Size = new System.Drawing.Size(300, 21);
+            this.txt_URL.Size = new System.Drawing.Size(247, 21);
             this.txt_URL.TabIndex = 1;
             this.txt_URL.Text = "http://www.panoramio.com/photo/54870546";
             // 
@@ -169,7 +170,7 @@
             // 
             // btn_Pause
             // 
-            this.btn_Pause.Location = new System.Drawing.Point(498, 51);
+            this.btn_Pause.Location = new System.Drawing.Point(427, 51);
             this.btn_Pause.Name = "btn_Pause";
             this.btn_Pause.Size = new System.Drawing.Size(75, 23);
             this.btn_Pause.TabIndex = 12;
@@ -179,7 +180,7 @@
             // 
             // btn_Stop
             // 
-            this.btn_Stop.Location = new System.Drawing.Point(579, 51);
+            this.btn_Stop.Location = new System.Drawing.Point(506, 51);
             this.btn_Stop.Name = "btn_Stop";
             this.btn_Stop.Size = new System.Drawing.Size(75, 23);
             this.btn_Stop.TabIndex = 13;
@@ -187,11 +188,22 @@
             this.btn_Stop.UseVisualStyleBackColor = true;
             this.btn_Stop.Click += new System.EventHandler(this.btn_Stop_Click);
             // 
+            // btn_RandomMining
+            // 
+            this.btn_RandomMining.Location = new System.Drawing.Point(586, 51);
+            this.btn_RandomMining.Name = "btn_RandomMining";
+            this.btn_RandomMining.Size = new System.Drawing.Size(75, 23);
+            this.btn_RandomMining.TabIndex = 14;
+            this.btn_RandomMining.Text = "随机开始";
+            this.btn_RandomMining.UseVisualStyleBackColor = true;
+            this.btn_RandomMining.Click += new System.EventHandler(this.btn_RandomMining_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(666, 386);
+            this.Controls.Add(this.btn_RandomMining);
             this.Controls.Add(this.btn_Stop);
             this.Controls.Add(this.btn_Pause);
             this.Controls.Add(this.label3);
@@ -235,6 +247,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btn_Pause;
         private System.Windows.Forms.Button btn_Stop;
+        private System.Windows.Forms.Button btn_RandomMining;
     }
 }
 

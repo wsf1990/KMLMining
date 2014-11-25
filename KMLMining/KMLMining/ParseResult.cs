@@ -32,16 +32,37 @@ namespace KMLMining
             File.AppendAllLines(GetFileName(), new string[] {line});
         }
         /// <summary>
-        /// 根据照片路径获取信息
+        /// 保存爬取信息
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static string[] GetByPhoto(string name)
+        /// <param name="character"></param>
+        public static void Save(Character character)
         {
-            string str = File.ReadAllLines(GetFileName()).FirstOrDefault(s=>s.Contains(name));
+            string line = character.ID + "," + character.Url + "," + character.Point.Name + "," + character.Point.Lat +
+                          "," + character.Point.Lng + "," + character.PhotoPath;
+            File.AppendAllLines(GetFileName(), new string[] { line });
+        }
+        /// <summary>
+        /// 根据id获取信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string[] GetByID(string id)
+        {
+            if (!File.Exists(GetFileName()))
+                return null;
+            string str = File.ReadAllLines(GetFileName()).FirstOrDefault(s => s.Contains(id));
             if (string.IsNullOrWhiteSpace(str))
                 return null;
             return str.Split(',');
+        }
+        /// <summary>
+        /// 判断是否已经爬取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool Exist(string id)
+        {
+            return GetByID(id) != null;
         }
     }
 }

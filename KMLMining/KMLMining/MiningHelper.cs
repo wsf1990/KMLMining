@@ -20,21 +20,75 @@ namespace KMLMining
         /// </summary>
         public static Character CurrentCharacter = new Character();
         /// <summary>
+        /// URL加上本后缀用于获取地名中文
+        /// </summary>
+        public static string LangExt = "?hl=zh-CN";
+        /// <summary>
+        /// 爬取数量
+        /// </summary>
+        public static int Count = 0;
+        /// <summary>
         /// 暂停操作
         /// </summary>
         public static ManualResetEvent manualReset = new ManualResetEvent(true);
+
         public static void DoMining(string url)
         {
-            int count = 0;
-            string nexturl = string.Empty;
-            while (!string.IsNullOrWhiteSpace(nexturl = ParseURL(url)))
+            var random = new Random();
+            string lastUrl = string.Empty;
+            while (true)
             {
-                WorkerHelper.BgWorker.ReportProgress(++count, url);
-                url = nexturl + "?hl=zh-CN";
-                manualReset.WaitOne();
-                if (WorkerHelper.BgWorker.CancellationPending)//取消操作
+                try
                 {
-                    break;
+                    lastUrl = url;
+                    url += LangExt;
+                    url = ParseURL(url);
+                    manualReset.WaitOne();
+                    if (string.IsNullOrWhiteSpace(url)) //url为空的时候结束工作
+                        break;
+                    if (WorkerHelper.BgWorker.CancellationPending) //取消操作
+                    {
+                        break;
+                    }
+                    Thread.Sleep(random.Next(1000, 2000));
+                }
+                catch (Exception e)
+                {
+                    //CommonHelper.ShowMessageBox("系统异常：" + ex.Message + " 请等待片刻重试！");
+                    //出现异常之后，重启翻墙软件
+                    Thread.Sleep(1000 * 10);//休息一阵
+                    ProcessHelper.OverWall();//重新翻墙
+                    Thread.Sleep(1000 * 10);//休息一阵
+                    url = lastUrl;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 随机爬取
+        /// </summary>
+        public static void RandomMining()
+        {
+            var random = new Random();
+            while (true)
+            {
+                try
+                {
+                    string url = "http://www.panoramio.com/photo/" + random.Next(1000000000);
+                    url += LangExt;
+                    url = ParseURL(url);
+                    if (!string.IsNullOrWhiteSpace(url))//如果找到了一个正确的URL，循环爬取之
+                    {
+                        DoMining(url);//当DoMining都找完了之后继续随机寻找
+                    }
+                }
+                catch (Exception e)
+                {
+                    //CommonHelper.ShowMessageBox("系统异常：" + ex.Message + " 请等待片刻重试！");
+                    //出现异常之后，重启翻墙软件
+                    Thread.Sleep(1000 * 10);//休息一阵
+                    ProcessHelper.OverWall();//重新翻墙
+                    Thread.Sleep(1000 * 10);//休息一阵
                 }
             }
         }
@@ -50,15 +104,20 @@ namespace KMLMining
             {
                 return string.Empty;
             }
-            bool isOk = true;//确认此次解析是否成功
-            var doc = new HtmlAgilityPack.HtmlDocument();
+            var doc = new HtmlDocument(); 
             doc.LoadHtml(content);
-            string imgPath = ParseImg(doc);//解析图片
-            var point = ParsePoint(doc);//解析经纬度信息
-            CurrentCharacter.PhotoPath = imgPath;
-            CurrentCharacter.Point = point;
-            CurrentCharacter.Url = url.Replace("?hl=zh-CN", "");
-            ParseResult.Save(imgPath, point);
+            //如果已经爬取过就不在爬取，只取下一条URL
+            if (!ParseResult.Exist(CommonHelper.GetID(url)))
+            {
+                string imgPath = ParseImg(doc); //解析图片
+                var point = ParsePoint(doc); //解析经纬度信息
+                CurrentCharacter.PhotoPath = imgPath;
+                CurrentCharacter.Point = point;
+                CurrentCharacter.Url = url.Replace(LangExt, "");
+                CurrentCharacter.ID = CommonHelper.GetID(CurrentCharacter.Url);
+                ParseResult.Save(CurrentCharacter);
+                WorkerHelper.BgWorker.ReportProgress(++Count, url);
+            }
             var nextUrl = ParseNextURL(doc);
             return nextUrl;
         }
@@ -70,7 +129,7 @@ namespace KMLMining
         private static string ParseNextURL(HtmlDocument doc)
         {
             var next = doc.GetElementbyId("photo-page-prev-next-container");
-            if (next == null)
+            if (next == null || next.Descendants("a").Count() < 2)
                 return string.Empty;
             var ne = next.Descendants("a").FirstOrDefault();
             if (ne == null)

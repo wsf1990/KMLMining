@@ -24,12 +24,23 @@ namespace KMLMining
         /// <returns></returns>
         public static string GetFilePath(string name)
         {
-            string path = Path.Combine(Application.StartupPath, "MiningData");
+            string path = Path.Combine("D:\\", "MiningData");
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
             path = Path.Combine(path, name);
             return path;
         } 
+        /// <summary>
+        /// 根据URL取出ID号
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string GetID(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return string.Empty;
+            return Path.GetFileName(url).Replace(MiningHelper.LangExt, "");
+        }
         #endregion
 
         #region 1. 从Url获取源代码
@@ -40,12 +51,34 @@ namespace KMLMining
         /// <returns></returns>
         public static string GetUrlString(string url)
         {
-            using (var wc = new WebClient())
+            //using (var wc = new WebClient())
+            //{
+            //    wc.Headers.Add("Referer", "http://www.panoramio.com/");
+            //    wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36");
+            //    wc.Encoding = Encoding.UTF8;
+            //    return wc.DownloadString(url);
+            //}
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Referer = "http://www.panoramio.com/";
+            request.UserAgent =
+                "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                wc.Encoding = Encoding.UTF8;
-                return wc.DownloadString(url);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    using (var stream = response.GetResponseStream())
+                    using (var reader = new StreamReader(stream))
+                    {
+                        string html = reader.ReadToEnd();
+                        return html;
+                    }
+                }
+                ShowMessageBox("下载网页错误!" + response.StatusCode);
+                return string.Empty;
             }
         }
+
+
         #endregion
 
         #region 2. 从Url下载文件
@@ -58,12 +91,16 @@ namespace KMLMining
         public static void SaveFileFromUrl(string fileName, string url)
         {
             var request = (HttpWebRequest) WebRequest.Create(url);
-
-            using (WebResponse response = request.GetResponse())
+            request.Referer = "http://www.panoramio.com/photo/" + Path.GetFileNameWithoutExtension(fileName);
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                if (!response.ContentType.ToLower().StartsWith("text/"))
+                if (!response.ContentType.ToLower().StartsWith("text/") && response.StatusCode == HttpStatusCode.OK)
                 {
                     SaveBinaryFile(response, fileName);
+                }
+                else
+                {
+                    ShowMessageBox("下载错误!" + response.StatusCode);
                 }
             }
         }

@@ -12,6 +12,12 @@ namespace KMLMining
     public class Character
     {
         /// <summary>
+        /// ID号，此处为URl最后的数字
+        /// 此处虽然与URL逻辑重复，但是能够使人看的更清楚
+        /// </summary>
+        public string ID { get; set; }
+
+        /// <summary>
         /// 对应的URL
         /// </summary>
         public string Url { get; set; }

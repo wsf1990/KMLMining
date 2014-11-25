@@ -59,6 +59,7 @@
     <Compile Include="MiningHelper.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="PointLatLng.cs" />
+    <Compile Include="ProcessHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkerHelper.cs" />
