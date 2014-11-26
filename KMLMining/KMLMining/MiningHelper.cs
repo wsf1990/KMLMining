@@ -166,7 +166,7 @@ namespace KMLMining
             var name1 = doc.GetElementbyId("map_info_breadcrumbs");
             if (name1 != null)
             {
-                name1.Descendants("a").ToList().ForEach(s => point.Name += s.InnerText.Trim() + "•");
+                name1.Descendants("a").ToList().ForEach(s => point.Name += s.InnerText.Replace("\r\n", "").Trim() + "•");
             }
             var name2 = doc.GetElementbyId("map_info_name");
             if (name2 != null)
