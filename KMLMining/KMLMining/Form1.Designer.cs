@@ -220,6 +220,7 @@
             this.Controls.Add(this.btn_Mining);
             this.Name = "Form1";
             this.Text = "KML挖掘";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pb_img)).EndInit();
             this.statusStrip1.ResumeLayout(false);

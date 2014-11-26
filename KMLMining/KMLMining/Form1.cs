@@ -132,6 +132,11 @@ namespace KMLMining
             WorkerHelper.BgWorker.RunWorkerAsync();
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveCurrnetUrl(MiningHelper.CurrentCharacter.Url);
+        }
+
         
     }
 }
